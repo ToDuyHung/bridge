@@ -8,7 +8,7 @@ Dưới đây là các phương pháp hàng đầu được phân loại theo ki
 
 | Mô hình / Kiến trúc | Paper / Blog | Code | Xử lý Input | Label Output | Loss Function | Năm | Danh mục |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **LlamaRec** | [Link](https://arxiv.org/abs/2311.02089) | [GitHub](https://github.com/mquad/LlamaRec) | Title + Abst + User History | Ranking Logits | Cross-Entropy | 2024 | LLM-based |
+| **LlamaRec** | [Link](https://arxiv.org/abs/2311.02089) | [GitHub]([https://github.com/mquad/LlamaRec](https://github.com/Yueeeeeeee/LlamaRec)) | Title + Abst + User History | Ranking Logits | Cross-Entropy | 2024 | LLM-based |
 | **SPECTER 2.0** | [Link](https://arxiv.org/abs/2211.13327) | [GitHub](https://github.com/allenai/SPECTER2) | Title + [SEP] + Abstract | Triplet (Q, P, N) | Triplet Margin | 2023 | Text-based |
 | **OAG-BERT v2** | [Link](https://arxiv.org/abs/2203.00392) | [GitHub](https://github.com/THUDM/CogDL) | Text + Entity (Author, Venue) | Link Prediction | MLM + Alignment | 2023 | Hybrid KG |
 | **SciNCL** | [Link](https://arxiv.org/abs/2202.06671) | [GitHub](https://github.com/malteos/scincl) | Title + Abstract + Neighbors | Graph Contrastive | InfoNCE | 2022 | Contrastive |
