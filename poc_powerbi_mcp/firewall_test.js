@@ -1,4 +1,4 @@
-const https = require('https');
+import https from 'https';
 
 const endpoints = [
     { name: "Microsoft Login (Azure AD)", url: "https://login.microsoftonline.com" },

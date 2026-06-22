@@ -13,7 +13,7 @@ Tài liệu này dùng để gửi cho đội ngũ quản trị hệ thống / D
 - [ ] Trong PowerBI Admin Portal, bật **"Allow service principals to use Power BI APIs"**.
 - [ ] Cấp quyền API Permission cho App: `Report.Read.All`, `Workspace.Read.All` và `Dataset.Read.All`.
 
-### 2. Thông tin Workspace & Report (Dành cho việc Nhúng Iframe)
+### 2. Thông tương Workspace & Report (Dành cho việc Nhúng Iframe)
 - [ ] **`Workspace ID`** (Phải thuộc Premium/Embedded Capacity).
 - [ ] Add Service Principal vào Workspace với quyền **Member** hoặc **Admin**.
 - [ ] Cung cấp danh sách **`Report ID`** được phép nhúng.
