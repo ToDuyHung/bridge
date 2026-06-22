@@ -1,0 +1,16 @@
+{
+  "name": "poc-powerbi-mcp",
+  "version": "1.0.0",
+  "description": "PoC for PowerBI MCP Server",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.6.0",
+    "@azure/msal-node": "^2.6.0",
+    "axios": "^1.6.0",
+    "dotenv": "^16.3.1"
+  }
+}

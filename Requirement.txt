@@ -1,0 +1,53 @@
+data schema nằm trên Glue Catalouge
+
+data thật nằm trên S3
+
+ 
+
+- 2 approach
+
+thông qua BI tương tác với OS --> PowerBI thông qua Athena làm cái SQLinterface
+
+ 
+
+chatbot tương tác với BI thông qua BI MCP hay không
+
+hoặc dash query
+
+ 
+
+ 
+
+AWS N1 <------------------> PowerBI (như thế nào)
+
+athena define ra view dựa trên query
+
+ 
+
+prompt gọi qua powerbi (data table): table này vốn dĩ đã có athena làm rồi
+
+thông qua mcp server
+
+DAX queries
+
+ 
+
+ 
+
+nếu powerbi không đi tới N1 được
+
+ 
+
+ChartJS ? agent + mcp server be like ? --> gọi athena
+
+--> build ChartJS để lấy được field nào key nào
+
+-->
+
+ 
+
+agent prompt lấy data qua athena
+
+agent build chart
+
+ 

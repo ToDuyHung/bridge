@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Athena + ChartJS (Drill-down Demo)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root { --primary: #4F46E5; --surface: #ffffff; --bg: #f3f4f6; --text: #1f2937; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); padding: 2rem; }
+        .container { max-width: 1000px; margin: 0 auto; background: var(--surface); padding: 2rem; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        h1 { margin-bottom: 0.5rem; }
+        .controls { display: flex; gap: 1rem; margin-bottom: 1.5rem; background: #f8fafc; padding: 1rem; border-radius: 8px;}
+        button { background: var(--primary); color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; }
+        .chart-container { position: relative; height: 400px; width: 100%; }
+        #dataTable { width: 100%; border-collapse: collapse; margin-top: 2rem; display: none; }
+        #dataTable th, #dataTable td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        #dataTable th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Data Visualization Agent (ChartJS Fallback)</h1>
+    <p>Demo tương tác (Interactive) và Drill-down (Click cột Năm -> Hiện chi tiết Tháng).</p>
+
+    <div class="controls">
+        <label>Chế độ Dữ liệu:</label>
+        <select id="dataMode">
+            <option value="mock">Dùng Mock Data (Giả lập AI)</option>
+            <option value="real">Nhập JSON thật từ MCP</option>
+        </select>
+        <button id="btnReset">Reset về Năm</button>
+    </div>
+
+    <!-- Khung nhập JSON ẩn đi khi dùng Mock -->
+    <textarea id="rawJsonInput" style="display:none; width:100%; height:100px; margin-bottom: 1rem;">
+[{"Year": 2022, "Revenue": 1500}, {"Year": 2023, "Revenue": 2000}]
+    </textarea>
+
+    <div class="chart-container">
+        <canvas id="mainChart"></canvas>
+    </div>
+
+    <!-- Bảng chi tiết hiện ra khi Drill-down -->
+    <table id="dataTable">
+        <thead><tr><th>Month</th><th>Revenue</th></tr></thead>
+        <tbody id="dataTableBody"></tbody>
+    </table>
+</div>
+
+<script>
+    const mockDataYear = [ { Year: "2022", Revenue: 50000 }, { Year: "2023", Revenue: 75000 } ];
+    const mockDataMonth2023 = [ { Month: "Jan", Revenue: 5000 }, { Month: "Feb", Revenue: 6000 }, { Month: "Mar", Revenue: 7000 } ];
+
+    let chartInstance = null;
+
+    function renderChart(data, isDrilldown = false) {
+        const ctx = document.getElementById('mainChart').getContext('2d');
+        if (chartInstance) chartInstance.destroy();
+
+        const labelKey = isDrilldown ? "Month" : "Year";
+        const labels = data.map(d => d[labelKey]);
+        const values = data.map(d => d.Revenue);
+
+        chartInstance = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Revenue',
+                    data: values,
+                    backgroundColor: 'rgba(79, 70, 229, 0.6)',
+                    borderColor: 'rgba(79, 70, 229, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                onClick: (e, elements) => {
+                    if (elements.length > 0 && !isDrilldown) {
+                        const index = elements[0].index;
+                        const yearClicked = labels[index];
+                        handleDrillDown(yearClicked);
+                    }
+                }
+            }
+        });
+    }
+
+    function handleDrillDown(year) {
+        console.log("Drill down into year:", year);
+        // Trong thực tế, lúc này Frontend sẽ gửi lại JSON lên Chatbot: "Cho tôi xin chi tiết năm 2023"
+        // Ở Demo này, tự động múa bằng Data tĩnh:
+        if (year === "2023") {
+            // Thay vì vẽ lại chart, ta hiện Data Table
+            document.querySelector('.chart-container').style.display = 'none';
+            document.getElementById('dataTable').style.display = 'table';
+            
+            const tbody = document.getElementById('dataTableBody');
+            tbody.innerHTML = '';
+            mockDataMonth2023.forEach(row => {
+                tbody.innerHTML += `<tr><td>${row.Month}</td><td>${row.Revenue}</td></tr>`;
+            });
+        } else {
+            alert(`Chưa có Mock data cho năm ${year}`);
+        }
+    }
+
+    document.getElementById('btnReset').addEventListener('click', () => {
+        document.querySelector('.chart-container').style.display = 'block';
+        document.getElementById('dataTable').style.display = 'none';
+        
+        const mode = document.getElementById('dataMode').value;
+        if (mode === "mock") {
+            renderChart(mockDataYear, false);
+        } else {
+            try {
+                const raw = JSON.parse(document.getElementById('rawJsonInput').value);
+                renderChart(raw, false);
+            } catch(e) { alert("JSON Lỗi!"); }
+        }
+    });
+
+    document.getElementById('dataMode').addEventListener('change', (e) => {
+        document.getElementById('rawJsonInput').style.display = e.target.value === 'real' ? 'block' : 'none';
+        document.getElementById('btnReset').click();
+    });
+
+    // Initial load
+    document.getElementById('btnReset').click();
+</script>
+
+</body>
+</html>
