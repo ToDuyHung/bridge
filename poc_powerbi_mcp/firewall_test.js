@@ -12,12 +12,15 @@ console.log("=========================================\n");
 endpoints.forEach(endpoint => {
     console.log(`Đang kiểm tra kết nối tới: ${endpoint.name} (${endpoint.url})`);
     const req = https.get(endpoint.url, (res) => {
-        if (res.statusCode === 200 || res.statusCode === 302 || res.statusCode === 404) {
-            // 404 is still a valid response from the server meaning network is open
-            console.log(`[PASS] Kết nối thành công tới ${endpoint.name}! (HTTP Status: ${res.statusCode})\n`);
-        } else {
-            console.log(`[WARNING] Đã kết nối được tới ${endpoint.name} nhưng nhận mã lỗi: ${res.statusCode}\n`);
-        }
+        // Đọc data để kết thúc request, tránh bị treo dẫn đến timeout oan
+        res.on('data', () => {}); 
+        res.on('end', () => {
+            if (res.statusCode === 200 || res.statusCode === 302 || res.statusCode === 404) {
+                console.log(`[PASS] Kết nối thành công tới ${endpoint.name}! (HTTP Status: ${res.statusCode})\n`);
+            } else {
+                console.log(`[WARNING] Đã kết nối được tới ${endpoint.name} nhưng nhận mã lỗi: ${res.statusCode}\n`);
+            }
+        });
     });
 
     req.on('error', (e) => {
